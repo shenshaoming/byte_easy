@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mbyte.easy.security.mapper.SysResourceMapper">
+  <resultMap id="BaseResultMap" type="com.mbyte.easy.security.entity.SysResource">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="available" jdbcType="BIT" property="available" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="order_num" jdbcType="INTEGER" property="orderNum" />
+    <result column="permission" jdbcType="VARCHAR" property="permission" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+   <!--连接查询，获取父栏目的资源信息-->
+  <association property="parentResource" column="parent_id" select="selectResourceByparentId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, available, name, order_num, permission, type, url, parent_id
+  </sql>
+    <!--根据角色id查询资源-->
+    <select id="selectResourceByparentId" parameterType="java.lang.Long"  resultType="com.mbyte.easy.security.entity.SysResource">
+        SELECT
+        sys_resource.id as id,
+        sys_resource.available as available,
+        sys_resource.`name` as name ,
+        sys_resource.permission as permission,
+        sys_resource.order_num as order_num,
+        sys_resource.type as type,
+        sys_resource.url as url,
+        sys_resource.parent_id as parent_id
+        FROM
+        sys_resource
+        where id = #{id}
+  </select>
+  <!-- 根据用户名查询资源列表-->
+  <select id="selectByUsername" parameterType="java.lang.String"  resultMap="BaseResultMap">
+    SELECT
+	sys_resource.id as id,
+	sys_resource.available as available,
+	sys_resource.`name` as name ,
+	sys_resource.permission as permission,
+	sys_resource.order_num as order_num,
+	sys_resource.type as type,
+	sys_resource.url as url,
+	sys_resource.parent_id as parent_id
+	FROM
+	sys_user
+	LEFT JOIN sys_user_roles ON sys_user.id = sys_user_roles.sys_user_id
+	LEFT JOIN sys_role ON sys_user_roles.roles_id = sys_role.id
+	LEFT JOIN sys_role_resources ON sys_role.id = sys_role_resources.sys_role_id
+	LEFT JOIN sys_resource ON sys_role_resources.resources_id = sys_resource.id
+	where sys_user.username = #{userName} order by sys_resource.order_num asc
+  </select>
+  <!--根据角色id查询资源信息-->
+  <select id="selectResourceByRoleId" parameterType="java.lang.Long"  resultMap="BaseResultMap">
+    SELECT
+	sys_resource.id as id,
+	sys_resource.available as available,
+	sys_resource.`name` as name ,
+	sys_resource.permission as permission,
+	sys_resource.order_num as order_num,
+	sys_resource.type as type,
+	sys_resource.url as url,
+	sys_resource.parent_id as parent_id
+	FROM
+	sys_role_resources
+	LEFT JOIN sys_resource ON sys_role_resources.resources_id = sys_resource.id
+	where sys_role_id = #{roleId}
+  </select>
+	<!--分页查询资源信息-->
+	<select id="listPage" parameterType="com.mbyte.easy.security.entity.SysResource" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_resource
+		where  1=1
+		<if test="resource.available != null and resource.available != ''">
+			and available = #{resource.available}
+		</if>
+		<if test="resource.name != null and resource.name != ''">
+			and name like '%${resource.name}%'
+		</if>
+		<if test="resource.type != null ">
+			and type = #{resource.type}
+		</if>
+		<if test="resource.parentId != null ">
+			and parent_id = #{resource.parentId}
+		</if>
+	</select>
+	<select id="selectByParentId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from sys_resource
+		where parent_id = #{parentId,jdbcType=BIGINT}
+	</select>
+</mapper>

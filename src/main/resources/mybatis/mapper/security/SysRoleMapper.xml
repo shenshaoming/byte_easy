@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mbyte.easy.security.mapper.SysRoleMapper">
+  <resultMap id="BaseResultMap" type="com.mbyte.easy.security.entity.SysRole">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="available" jdbcType="BIT" property="available" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <!--连接查询，获取角色的资源信息-->
+    <collection property="resources"  column="id"   select="selectResourceByRoleId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, available, description, name
+  </sql>
+  <!--插入角色信息返回主键-->
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.mbyte.easy.security.entity.SysRole">
+    insert into sys_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="available != null">
+        available,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="available != null">
+        #{available,jdbcType=BIT},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <!--根据角色id查询资源-->
+  <select id="selectResourceByRoleId" parameterType="java.lang.Long"  resultType="com.mbyte.easy.security.entity.SysResource">
+    SELECT
+	sys_resource.id as id,
+	sys_resource.available as available,
+	sys_resource.`name` as name ,
+	sys_resource.permission as permission,
+	sys_resource.order_num as order_num,
+	sys_resource.type as type,
+	sys_resource.url as url,
+	sys_resource.parent_id as parent_id
+	FROM
+	sys_role_resources
+	LEFT JOIN sys_resource ON sys_role_resources.resources_id = sys_resource.id
+	where sys_role_id = #{id}
+  </select>
+  <!--根据用户Id查询角色信息-->
+  <select id="selectRolesByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT
+	sys_role.id,
+	sys_role.available,
+	sys_role.description,
+	sys_role.`name`
+	FROM
+	sys_user_roles
+	LEFT JOIN sys_role ON sys_user_roles.roles_id = sys_role.id
+	where sys_user_roles.sys_user_id = #{id,jdbcType=BIGINT}
+  </select>
+    <!--分页查询角色信息-->
+<select id="listPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_role
+    where 1 = 1
+    <if test="sysRole.name != null and sysRole.name != ''">
+        and name like "%"#{sysRole.name}"%"
+    </if>
+</select>
+
+</mapper>

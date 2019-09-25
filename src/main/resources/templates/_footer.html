@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html  xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="footerjs">
+<script type="text/javascript" th:src="@{/lib/jquery/1.9.1/jquery.min.js}" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" th:src="@{/lib/layer/2.4/layer.js}" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" th:src="@{/js/layui_extends/laydate.js}" src="js/layui_extends/laydate.js"></script>
+<script type="text/javascript" th:src="@{/h-ui/js/H-ui.min.js}" src="static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" th:src="@{/h-ui.admin/js/H-ui.admin.js}" src="static/h-ui.admin/js/H-ui.admin.js"></script> 
+<script type="text/javascript" th:src="@{/lib/common/pagination.js}" src="lib/common/pagination.js"></script>
+
+<script data-n-head="true" th:src="@{/js/common/layer.js}" src="js/common/layer.js"></script>
+<script data-n-head="true" th:src="@{/js/common/file.js}" src="js/common/file.js"></script>
+<script type="text/javascript" th:src="@{/lib/jquery.validation/1.14.0/jquery.validate.js}" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" th:src="@{/lib/jquery.validation/1.14.0/validate-methods.js}" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" th:src="@{/lib/jquery.validation/1.14.0/messages_zh.js}"  src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+    <script type="text/javascript" th:src="@{/lib/datatables/1.10.0/jquery.dataTables.min.js}" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" th:src="@{/lib/My97DatePicker/4.8/WdatePicker.js}"  src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<!--/_footer 作为公共模版分离出去-->
+<!-- 项目根路径 -->
+<input type="hidden" name="baseUrl" id="baseUrl" th:value="@{/}" />
+<script>
+    /**
+     * 对应后台的返回类型
+     * @type {string}
+     */
+    var CODE_SUCCESS="000000";
+    var CODE_FAIL="999999";
+
+
+    $(function(){
+        function highlight(){
+            $('.my-dl').find('a').on("click",function(){
+                if($(this).parent('li').siblings('li').is('.hightlight')){
+                    $(this).parent('li').siblings('li').removeClass('hightlight');
+                    // $(this).parent('li').addClass('hightlight');
+                }else if($(this).parents('.my-dl').siblings('.my-dl').find('li').is('.hightlight')){
+                    $(this).parents('.my-dl').siblings('.my-dl').find('li').removeClass('hightlight');
+                    // $(this).addClass('hightlight');
+                    return;
+                }
+                else{
+                    $(this).parent('li').addClass('hightlight');
+                }
+
+            })
+        }
+        $('.my-dl').each(function(){
+            $( this).click(function(){
+                if($(this).find('dt').is('.selected')){
+                    highlight();
+                }else{
+                    $(this).find('li').removeClass('hightlight');
+                }
+            })
+
+        })
+    })
+</script>
+</div>
+</body>
+</html>

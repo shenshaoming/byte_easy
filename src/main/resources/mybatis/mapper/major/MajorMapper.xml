@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mbyte.easy.student.mapper.MajorMapper">
+  <resultMap id="BaseResultMap" type="com.mbyte.easy.student.entity.Major">
+      <id column="id" jdbcType="BIGINT" property="id" />
+      <id column="collegeId" jdbcType="BIGINT" property="collegeId" />
+      <id column="collegeName" jdbcType="VARCHAR" property="collegeName" />
+      <id column="majorName" jdbcType="VARCHAR" property="majorName" />
+      <id column="editTime" jdbcType="TIMESTAMP" property="editTime" />
+      <id column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+
+  </resultMap>
+  <sql id="Base_Column_List">
+              id,
+      collegeId, collegeName, majorName, editTime, createTime
+  </sql>
+
+<!--注意:在打开下面注释的时候，在执行添加和更新操作时，一定要添加事物，否则会造成无法添加和更新-->
+<!--
+ <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_major
+       where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from  t_major
+       where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.mbyte.easy.student.entity.Major">
+    insert into t_major (collegeId, collegeName, majorName, editTime, createTime)
+    values (
+         collegeId = #{collegeId,jdbcType=BIGINT},
+         collegeName = #{collegeName,jdbcType=VARCHAR},
+         majorName = #{majorName,jdbcType=VARCHAR},
+         editTime = #{editTime,jdbcType=TIMESTAMP},
+         createTime = #{createTime,jdbcType=TIMESTAMP}
+    )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.mbyte.easy.student.entity.Major">
+    insert into t_major
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="collegeId != null">
+        collegeId,
+      </if>
+      <if test="collegeName != null">
+        collegeName,
+      </if>
+      <if test="majorName != null">
+        majorName,
+      </if>
+      <if test="editTime != null">
+        editTime,
+      </if>
+      <if test="createTime != null">
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+
+      <if test="collegeId != null">
+        collegeId = #{collegeId,jdbcType=BIGINT},
+      </if>
+
+      <if test="collegeName != null">
+        collegeName = #{collegeName,jdbcType=VARCHAR},
+      </if>
+
+      <if test="majorName != null">
+        majorName = #{majorName,jdbcType=VARCHAR},
+      </if>
+
+      <if test="editTime != null">
+        editTime = #{editTime,jdbcType=TIMESTAMP},
+      </if>
+
+      <if test="createTime != null">
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mbyte.easy.student.entity.Major">
+    update t_major
+    <set>
+       <if test="collegeId != null">
+         collegeId = #{collegeId,jdbcType=BIGINT},
+      </if>
+       <if test="collegeName != null">
+         collegeName = #{collegeName,jdbcType=VARCHAR},
+      </if>
+       <if test="majorName != null">
+         majorName = #{majorName,jdbcType=VARCHAR},
+      </if>
+       <if test="editTime != null">
+         editTime = #{editTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="createTime != null">
+         createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+       where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mbyte.easy.student.entity.Major">
+    update t_major
+    set
+        collegeId = #{collegeId,jdbcType=BIGINT},
+        collegeName = #{collegeName,jdbcType=VARCHAR},
+        majorName = #{majorName,jdbcType=VARCHAR},
+        editTime = #{editTime,jdbcType=TIMESTAMP},
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+
+       where id = #{id,jdbcType=BIGINT}
+  </update>
+-->
+</mapper>

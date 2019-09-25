@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mbyte.easy.security.mapper.SysUserMapper">
+  <resultMap id="BaseResultMap" type="com.mbyte.easy.security.entity.SysUser">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="available" jdbcType="BIT" property="available" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="sex_type" jdbcType="INTEGER" property="sexType" />
+    <collection property="roles"  column="id"   select="selectRolesByUserID">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="available" jdbcType="BIT" property="available" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <collection property="resources"  column="id"   select="selectResourceByRoleId" >
+            <id column="id" jdbcType="BIGINT" property="id" />
+            <result column="available" jdbcType="BIT" property="available" />
+            <result column="name" jdbcType="VARCHAR" property="name" />
+            <result column="order_num" jdbcType="INTEGER" property="orderNum" />
+            <result column="permission" jdbcType="VARCHAR" property="permission" />
+            <result column="type" jdbcType="INTEGER" property="type" />
+            <result column="url" jdbcType="VARCHAR" property="url" />
+            <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+        </collection>
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, createtime, password, updatetime, username, available, email, tel, sex_type
+  </sql>
+
+    <select id="selectResourceByRoleId" parameterType="java.lang.Long"  resultType="com.mbyte.easy.security.entity.SysResource">
+    SELECT
+	sys_resource.id as id,
+	sys_resource.available as available,
+	sys_resource.`name` as name ,
+	sys_resource.permission as permission,
+	sys_resource.order_num as order_num,
+	sys_resource.type as type,
+	sys_resource.url as url,
+	sys_resource.parent_id as parent_id
+	FROM
+	sys_role_resources
+	LEFT JOIN sys_resource ON sys_role_resources.resources_id = sys_resource.id
+	where sys_role_id = #{id,jdbcType=BIGINT}
+  </select>
+    <select id="selectRolesByUserID" parameterType="java.lang.Long" resultType="com.mbyte.easy.security.entity.SysRole">
+    SELECT
+	sys_role.id,
+	sys_role.available,
+	sys_role.description,
+	sys_role.`name`
+	FROM
+	sys_user_roles
+	LEFT JOIN sys_role ON sys_user_roles.roles_id = sys_role.id
+	where sys_user_roles.sys_user_id = #{id,jdbcType=BIGINT}
+  </select>
+    <!--分页查询用户信息-->
+    <select id="listPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_user
+        where 1=1
+        <if test=" sysUser.username != null and sysUser.username !=''">
+            <bind name="pattern" value="'%'+sysUser.username+'%'"/>
+            and username like #{pattern}
+        </if>
+    </select>
+  <!--根据用户id获取用户信息-->
+  <select id="selectByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <!-- 根据条件查询用户信息 -->
+  <select id="selectByUser" parameterType="com.mbyte.easy.security.entity.SysUser" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user
+    where 1=1 
+    <if test=" username != null and username !=''">
+			and username = #{username}
+	</if>
+  </select>
+  <!-- 根据用户名查询用户 -->
+  <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user
+    where  username = #{username} 
+  </select>
+</mapper>
