@@ -12,19 +12,19 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ * @author 申劭明
+ */
 @RequestMapping("/ueditor")
 @Controller
 public class UeditorController {
 
-	@Autowired
-	private HttpServletRequest request;
 	@Value("${easy.server.path}")
 	private String serverpath;
 	@RequestMapping("/index")
 	public String ueditor() {
 		return "ueditor";
 	}
-
 
 	/**
 	 * 获取ueditor配置参数
@@ -48,7 +48,7 @@ public class UeditorController {
     public Ueditor imgUpload(MultipartFile upfile){
 		Ueditor ueditor = new Ueditor();
         //上传文件
-		String filePath = serverpath+ FileUtil.uploadSuffixPath + FileUtil.uploadFile(upfile);
+		String filePath = serverpath + FileUtil.uploadFile(upfile);
 		if(StringUtils.isNoneBlank(filePath)){
 			ueditor.setUrl(filePath);
 			ueditor.setState(PublicMsg.UeditorMsg.SUCCESS.get());
@@ -57,6 +57,4 @@ public class UeditorController {
 		}
         return ueditor;
     }
-
-
 }

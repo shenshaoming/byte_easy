@@ -30,7 +30,7 @@ import java.util.List;
 
 /**
  * 自定义校验方式
- * @author 王震
+ * @author 盖猛
  *
  */
 @Component
@@ -133,7 +133,8 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 				SysResource resource = resourceMapper.selectById(roleResources.getResourcesId());
 				if(resource != null ){
 					if(resource.getPermission() != null && !"".equals(resource.getPermission())){
-						auths.add(new SimpleGrantedAuthority(resource.getPermission()));//将用户的角色名作为权限
+						//将用户的角色名作为权限
+						auths.add(new SimpleGrantedAuthority(resource.getPermission()));
 					}
 				}
 			}

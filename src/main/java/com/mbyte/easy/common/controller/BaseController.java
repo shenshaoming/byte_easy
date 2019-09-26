@@ -12,36 +12,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+/**
+ * 封装一些基础的方法
+ * @author 申劭明
+ */
 public class BaseController {
-    /**
-     * 将前台传递过来的日期格式的字符串，自动转化为时间类型
-     */
-    @InitBinder
-    public void initBinder(WebDataBinder binder)
-    {
-        // LocalDateTime 类型转换
-        binder.registerCustomEditor(LocalDateTime.class, new PropertyEditorSupport()
-        {
-            @Override
-            public void setAsText(String text)
-            {
-                if(StringUtils.isNoneBlank(text)){
-                    setValue(LocalDateTime.parse(text, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-                }
-            }
-        });
-        // LocalDate 类型转换
-        binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport()
-        {
-            @Override
-            public void setAsText(String text)
-            {
-                if(StringUtils.isNoneBlank(text)){
-                    setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                }
-            }
-        });
-    }
+
     /**
      * 响应返回结果
      *
@@ -89,7 +65,7 @@ public class BaseController {
     }
 
     /**
-     * 返回成功消息
+     * 返回成功消息,将object转为JSON形式返回
      */
     public AjaxResult success(Object object)
     {

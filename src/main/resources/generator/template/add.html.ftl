@@ -29,12 +29,12 @@
             </div>
            <#else>
             <div class="formControls col-xs-10 col-sm-10">
-                <#if field.comment?index_of("img")!=-1>
+                <#if field.comment?index_of("img")!=-1 || field.comment?index_of("pic")!=-1>
                     <input class="input-text upload-url" type="text"  readonly="" style="width:400px">
                     <a href="javascript:void();" class="btn btn-primary upload-btn"><i class="Hui-iconfont"></i> 浏览文件</a>
-                    <input type="file" multiple="" style="width:100%; height:100%"  name="${field.propertyName}File"   id="${field.propertyName}" class="input-file valid">
+                    <input type="file" multiple style="width:100%; height:100%"  name="${field.propertyName}File"   id="${field.propertyName}" class="input-file valid">
                 <#else>
-                    <input type="input-text" class="input-text" t name="${field.propertyName}"  placeholder="修改${field.comment?split("#")[0]}" id="${field.propertyName}"/>
+                    <input type="input-text" class="input-text" name="${field.propertyName}"  placeholder="${field.comment?split("#")[0]}" id="${field.propertyName}"/>
                 </#if>
             </div>
             </#if>

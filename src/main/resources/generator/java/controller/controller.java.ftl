@@ -50,12 +50,13 @@ public class ${table.controllerName} extends ${superControllerClass}  {
     * @return
     */
     @RequestMapping
-    public String index(Model model,@RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,@RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize
+    public String index(Model model,@RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
+                        @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize
         <#list table.fields as field >
     <#if (field.propertyName != "id" && field.propertyName != "create_time" && field.propertyName != "update_time") >
         <#if (field.type == "datetime") >, String ${field.propertyName}Space</#if></#if></#list>, ${entity} ${entity?uncap_first}) {
-        Page<${entity}> page = new Page<${entity}>(pageNo, pageSize);
-        QueryWrapper<${entity}> queryWrapper = new QueryWrapper<${entity}>();
+        Page<${entity}> page = new Page<>(pageNo, pageSize);
+        QueryWrapper<${entity}> queryWrapper = new QueryWrapper<>();
     <#list table.fields as field >
         <#if (field.propertyName != "id" && field.propertyName != "create_time" && field.propertyName != "update_time") >
         if(!ObjectUtils.isEmpty(${entity?uncap_first}.get${field.propertyName?cap_first}())) {

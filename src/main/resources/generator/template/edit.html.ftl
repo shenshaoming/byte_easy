@@ -44,7 +44,6 @@
 
                             </div>
                         </#if>
-                    </div>
                 </div>
             </#if>
         </#list>

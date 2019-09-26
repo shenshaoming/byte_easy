@@ -1,12 +1,10 @@
 package com.mbyte.easy.scheduling;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 /**
  * 测试springboot调度
- * @author  王震
+ * @author  申劭明
  */
 //@Configuration
 //@EnableScheduling

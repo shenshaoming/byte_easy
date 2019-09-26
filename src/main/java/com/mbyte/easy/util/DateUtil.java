@@ -1,5 +1,6 @@
 package com.mbyte.easy.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,15 +18,13 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
+ * @author 申劭明
  * @ClassName: DateUtil
  * @Description: 时间工具类
  * @Version 1.0
  **/
+@Slf4j
 public class DateUtil {
-    /**
-     * 日志
-     */
-    private static final Logger logger = LoggerFactory.getLogger(DateUtil.class);
     /**
      * date format yyyy-MM-dd HH:mm:ss
      */

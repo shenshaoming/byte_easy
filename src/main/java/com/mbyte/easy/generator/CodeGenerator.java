@@ -22,7 +22,7 @@ import java.util.*;
  *  自动生成工具类
  * </p>
  *
- * @author 王震
+ * @author 申劭明
  * @since 2019-03-11
  */
 public class CodeGenerator {
@@ -64,13 +64,13 @@ public class CodeGenerator {
      * 功能描述
      * 根据传入的参数自动生成所有需要的文件
      * controller层,dao层,entity层,service层,serviceImpl
-     * mapper.xml
+     * mapper.xml和增删改查的页面
 
      * @param moduleName 模型名称
      * @param tableName 数据库中表的名称
      * @param ignoreFlag 是否忽略前缀
      * @param ignorePrefix 前缀
-     * @param isRest 日否生成Rest接口
+     * @param isRest 是否生成Rest接口
      * @return : void
      * @author : 申劭明
      * @date : 2019/7/19 22:02

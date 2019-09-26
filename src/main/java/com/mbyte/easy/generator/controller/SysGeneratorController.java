@@ -23,12 +23,12 @@ import java.util.List;
 
 
 /**
-* <p>
-* 前端控制器
-* </p>
-* @author 申劭明
-* @since 2019-03-11
-*/
+ * <p>
+ * 前端控制器
+ * </p>
+ * @author 申劭明
+ * @since 2019-03-11
+ */
 @Controller
 @RequestMapping("/generator/sysGenerator")
 public class SysGeneratorController extends BaseController  {
@@ -38,31 +38,36 @@ public class SysGeneratorController extends BaseController  {
     @Autowired
     private ISysGeneratorService sysGeneratorService;
 
-    @ModelAttribute("databases")
-    public List<String> resourceList() {
-
-        return sysGeneratorService.getTables();
+    /**
+     * @Description : 将数据库列表添加到model中
+     *
+     * @author : 申劭明
+     * @date : 2019/9/26 18:22
+     */
+    public void resourceList(Model model) {
+        model.addAttribute("databases",sysGeneratorService.getTables());
     }
 
     /**
-    * 查询列表
-    *
-    * @param model
-    * @param pageNo
-    * @param pageSize
-    * @param sysGenerator
-    * @return
-    */
+     * 查询列表
+     *
+     * @param model
+     * @param pageNo
+     * @param pageSize
+     * @param sysGenerator
+     * @return
+     */
     @RequestMapping
     public String index(Model model,@RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,@RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize, String updateTimeSpace, String createTimeSpace, SysGenerator sysGenerator) {
-        Page<SysGenerator> page = new Page<SysGenerator>(pageNo, pageSize);
-        QueryWrapper<SysGenerator> queryWrapper = new QueryWrapper<SysGenerator>();
+        Page<SysGenerator> page = new Page<>(pageNo, pageSize);
+        QueryWrapper<SysGenerator> queryWrapper = new QueryWrapper<>();
         if(!ObjectUtils.isEmpty(sysGenerator.getModuleName())) {
             queryWrapper = queryWrapper.like("moduleName",sysGenerator.getModuleName());
-         }
+        }
         if(!ObjectUtils.isEmpty(sysGenerator.getTableName())) {
             queryWrapper = queryWrapper.like("tableName",sysGenerator.getTableName());
-         }
+        }
+        resourceList(model);
         IPage<SysGenerator> pageInfo = sysGeneratorService.page(page, queryWrapper);
         model.addAttribute("searchInfo", sysGenerator);
         model.addAttribute("pageInfo", new PageInfo(pageInfo));
@@ -70,18 +75,19 @@ public class SysGeneratorController extends BaseController  {
     }
 
     /**
-    * 添加跳转页面
-    * @return
-    */
+     * 添加跳转页面
+     * @return
+     */
     @GetMapping("addBefore")
-    public String addBefore(){
+    public String addBefore(Model model){
+        resourceList(model);
         return prefix+"add";
     }
     /**
-    * 添加
-    * @param sysGenerator
-    * @return
-    */
+     * 添加
+     * @param sysGenerator
+     * @return
+     */
     @PostMapping("add")
     @ResponseBody
     public AjaxResult add(SysGenerator sysGenerator){
@@ -122,19 +128,20 @@ public class SysGeneratorController extends BaseController  {
 
 
     /**
-    * 添加跳转页面
-    * @return
-    */
+     * 添加跳转页面
+     * @return
+     */
     @GetMapping("editBefore/{id}")
     public String editBefore(Model model,@PathVariable("id")Long id){
+        resourceList(model);
         model.addAttribute("sysGenerator",sysGeneratorService.getById(id));
         return prefix+"edit";
     }
     /**
-    * 修改
-    * @param sysGenerator
-    * @return
-    */
+     * 修改
+     * @param sysGenerator
+     * @return
+     */
     @PostMapping("edit")
     @ResponseBody
     public AjaxResult edit(SysGenerator sysGenerator){
@@ -146,20 +153,20 @@ public class SysGeneratorController extends BaseController  {
         return toAjax(sysGeneratorService.updateById(sysGenerator));
     }
     /**
-    * 删除
-    * @param id
-    * @return
-    */
+     * 删除
+     * @param id
+     * @return
+     */
     @GetMapping("delete/{id}")
     @ResponseBody
     public AjaxResult delete(@PathVariable("id") Long id){
         return toAjax(sysGeneratorService.removeById(id));
     }
     /**
-    * 批量删除
-    * @param ids
-    * @return
-    */
+     * 批量删除
+     * @param ids
+     * @return
+     */
     @PostMapping("deleteAll")
     @ResponseBody
     public AjaxResult deleteAll(@RequestBody List<Long> ids){

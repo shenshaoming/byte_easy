@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * 角色控制类
  * 
- * @author 王震
+ * @author 程阔
  *
  */
 @Controller

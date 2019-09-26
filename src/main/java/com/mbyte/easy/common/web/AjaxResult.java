@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * @ClassName: AjaxResult
  * @Description: 操作消息提醒
- * @Author: lxt
+ * @Author: 申劭明
  * @Date: 2019-03-12 15:09
  * @Version 1.0
  **/

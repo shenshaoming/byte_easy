@@ -3,7 +3,7 @@ package com.mbyte.easy.generator.model;
 import lombok.*;
 
 /**
- * @auther: wangzhen
+ * @auther: 申劭明
  * @date: 19-4-11 21:53
  * @description: 封装mybatis参数
  */

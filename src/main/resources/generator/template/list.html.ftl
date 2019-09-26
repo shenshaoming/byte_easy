@@ -45,9 +45,9 @@
                                          <input type="input-text" class="input-text" th:value="${r"$"}{searchInfo.${field.propertyName}}" name="${field.propertyName}" placeholder="搜索${field.comment?split("#")[0]}" id="${field.propertyName}"/>
                                      </#if>
                                 <#elseif field.propertyName == "createTime">
-                                    <input type="input-text" placeholder="搜索创建时间" name="updateTimeSpace" th:value="${updateTimeSpace}" class="input-text  timeSpace" autocomplete="off"/>
+                                    <input type="input-text" placeholder="搜索创建时间" name="createTimeSpace" th:value="${r"$"}{createTimeSpace}" class="input-text  timeSpace" autocomplete="off"/>
                                 <#elseif field.propertyName == "updateTime">
-                                    <input type="input-text" placeholder="搜索更新时间" name="updateTimeSpace" th:value="${updateTimeSpace}" class="input-text  timeSpace" autocomplete="off"/>
+                                    <input type="input-text" placeholder="搜索更新时间" name="updateTimeSpace" th:value="${r"$"}{updateTimeSpace}" class="input-text  timeSpace" autocomplete="off"/>
                                 </#if>
                             </#list>
                             <button type="submit"

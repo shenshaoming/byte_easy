@@ -6,7 +6,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 /**
  * 该类提供了获取用户登录时携带的额外信息的功能，默认实现WebAuthenticationDetails提供了remoteAddress与sessionId信息。
  * 开发者可以通过Authentication的getDetails()获取WebAuthenticationDetails。
- * @author 王震
+ * @author 秦旭函
  *
  */
 public class CustomWebAuthenticationDetails extends WebAuthenticationDetails {

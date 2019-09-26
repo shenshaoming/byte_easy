@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * @ClassName: UserController
  * @Description: 管理员控制类
- * @Author: lxt
+ * @Author: 陈艺博
  * @Date: 2019-06-11 14:01
  * @Version 1.0
  **/
@@ -67,9 +67,9 @@ public class UserController extends BaseController {
 			user.setUsername(name);
 			model.addAttribute("name", name);
 		}
-		Page<SysUser> page = new Page<SysUser>(pageNo, pageSize);
+		Page<SysUser> page = new Page<>(pageNo, pageSize);
 		IPage<SysUser> pageInfo = userService.listPage(user,page);
-		model.addAttribute("pageInfo", new PageInfo<SysUser>(pageInfo));
+		model.addAttribute("pageInfo", new PageInfo<>(pageInfo));
 		return this.prefix + "admin-list";
 	}
 
@@ -88,7 +88,7 @@ public class UserController extends BaseController {
 
 	@ResponseBody
 	@RequestMapping(value = "/add-user", params = "save=true")
-	public AjaxResult addUser(Model model, @ModelAttribute(value = "user") SysUser user,
+	public AjaxResult addUser(@ModelAttribute(value = "user") SysUser user,
 			@RequestParam(required = false) String userRoles) {
 		SysUserRoles sysUserRoles = new SysUserRoles();
 		SysUser dbUser = userService.selectByUsername(user.getUsername());
@@ -120,7 +120,6 @@ public class UserController extends BaseController {
 	/**
 	 * 禁用/启用用户
 	 * 
-	 * @param model
 	 * @param id
 	 * @return
 	 * @Description:
@@ -128,7 +127,7 @@ public class UserController extends BaseController {
 	@PreAuthorize("hasAuthority('/user/available-user')")
 	@ResponseBody
 	@RequestMapping(value = "/available-user/{id}")
-	public AjaxResult availableUser(Model model, @PathVariable("id") Long id) {
+	public AjaxResult availableUser(@PathVariable("id") Long id) {
 		SysUser user = userService.selectByPrimaryKey(id);
 		if (user.getAvailable() != null) {
 			user.setAvailable(!user.getAvailable());
@@ -146,13 +145,12 @@ public class UserController extends BaseController {
 	 * 删除
 	 * 
 	 * @param id
-	 * @param model
 	 * @return
 	 */
 	@PreAuthorize("hasAuthority('/user/delete-user')")
 	@ResponseBody
 	@RequestMapping(value = "/delete-user/{id}")
-	public AjaxResult delet(Model model, @PathVariable("id") Long id) {
+	public AjaxResult delete(@PathVariable("id") Long id) {
 		try {
 			userService.removeUser(id);
 			return success();
@@ -206,7 +204,7 @@ public class UserController extends BaseController {
 	}
 
 	/**
-	 * @Author 王震
+	 * @Author
 	 * @Description 更新用户和关联的角色信息
 	 * @Date 15:28 2019/4/14
 	 * @Param [model, user, userRoles]
@@ -220,12 +218,11 @@ public class UserController extends BaseController {
 	}
 
 	/**
-	 * 修改管理员密码
+	 * @Description: 修改管理员密码
 	 * 
 	 * @param model
 	 * @param user
 	 * @return
-	 * @Description:
 	 */
 	@PreAuthorize("hasAuthority('/user/modify-password')")
 	@RequestMapping(value = "/modify-password/{id}")
@@ -237,7 +234,7 @@ public class UserController extends BaseController {
 	}
 
 	/**
-	 * @Author 王震
+	 * @Author 孔乐宁
 	 * @Description 修改系统用户密码
 	 * @Date 15:29 2019/4/14
 	 * @Param [model, user, adminPassword, req]
@@ -245,13 +242,8 @@ public class UserController extends BaseController {
 	 **/
 	@ResponseBody
 	@RequestMapping(value = "/modify-password", params = "save=true")
-	public AjaxResult modifyPassword(Model model, @ModelAttribute(value = "user") SysUser user, String adminPassword,
-			HttpServletRequest req) {
+	public AjaxResult modifyPassword(@ModelAttribute(value = "user") SysUser user) {
 		SysUser dbUser = userService.selectByPrimaryKey(user.getId());
-
-		String loginUserName = Utility.getCurrentUsername();
-		SysUser loginUser = userService.selectByUsername(loginUserName);
-
 		if (dbUser != null) {
 			dbUser.setPassword(Utility.QuickPassword(user.getPassword()));
 			userService.updateById(dbUser);
