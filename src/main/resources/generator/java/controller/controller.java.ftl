@@ -8,7 +8,7 @@ import ${package.Service}.${table.serviceName};
 import ${cfg.superController};
 import com.mbyte.easy.common.web.AjaxResult;
 import com.mbyte.easy.util.PageInfo;
-import org.apache.commons.lang3.StringUtils;
+import com.mbyte.easy.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 <#if restControllerStyle>
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,7 +31,6 @@ import java.time.LocalDateTime;
 * @since ${.now?date}
 */
 @Controller
-<#--@RequestMapping("<#if package.ModuleName??>/${package.ModuleName}</#if><#if controllerMappingHyphenStyle>/${controllerMappingHyphen}<#else>/${table.entityPath}</#if>")-->
 @RequestMapping("<#if package.ModuleName??>/${package.ModuleName}</#if>/${entity ?uncap_first}")
 public class ${table.controllerName} extends ${superControllerClass}  {
 
@@ -54,14 +53,25 @@ public class ${table.controllerName} extends ${superControllerClass}  {
                         @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize
         <#list table.fields as field >
     <#if (field.propertyName != "id" && field.propertyName != "create_time" && field.propertyName != "update_time") >
-        <#if (field.type == "datetime") >, String ${field.propertyName}Space</#if></#if></#list>, ${entity} ${entity?uncap_first}) {
+        <#if (field.type == "datetime") >, @ModelAttribute("${field.propertyName}Space")String ${field.propertyName}Space</#if></#if></#list>, ${entity} ${entity?uncap_first}) {
         Page<${entity}> page = new Page<>(pageNo, pageSize);
         QueryWrapper<${entity}> queryWrapper = new QueryWrapper<>();
     <#list table.fields as field >
         <#if (field.propertyName != "id" && field.propertyName != "create_time" && field.propertyName != "update_time") >
-        if(!ObjectUtils.isEmpty(${entity?uncap_first}.get${field.propertyName?cap_first}())) {
-            queryWrapper = queryWrapper.like("${field.name}",${entity?uncap_first}.get${field.propertyName?cap_first}());
-         }
+            <#if field.type == "datetime">
+            if (!ObjectUtils.isEmpty(${field.propertyName}Space)){
+                try {
+                    LocalDateTime[] localDateTimes = DateUtil.stringToLocals(${field.propertyName}Space);
+                    queryWrapper = queryWrapper.between("${field.name}",localDateTimes[0],localDateTimes[1]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            <#else>
+            if(!ObjectUtils.isEmpty(${entity?uncap_first}.get${field.propertyName?cap_first}())) {
+                queryWrapper = queryWrapper.like("${field.name}",${entity?uncap_first}.get${field.propertyName?cap_first}());
+            }
+            </#if>
         </#if>
     </#list>
         IPage<${entity}> pageInfo = ${entity?uncap_first}Service.page(page, queryWrapper);

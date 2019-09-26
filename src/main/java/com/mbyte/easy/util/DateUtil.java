@@ -16,6 +16,8 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author 申劭明
@@ -49,6 +51,11 @@ public class DateUtil {
      * 月索引获取对应季度（月份减1），第一个0，用于占位
      */
     public static final int [] QUARTERS = {0,1,1,1,2,2,2,3,3,3,4,4,4};
+
+    /**
+     * 通过正则匹配24小时的时间字段,例如2019-09-09 00:00:00
+     */
+    public static final Pattern PATTERN_REGEX_24H = Pattern.compile("[0-9]+-[0-9]+-[0-9]+[\\s]00:00:00");
 
     /**
      * 枚举时间单位
@@ -211,6 +218,18 @@ public class DateUtil {
         return ChronoUnit.DAYS.between(startDate, endDate);
     }
     /**
+     * 获取日期时间差endDate-startDate
+     * @param startDate
+     * @param endDate
+     * @return
+     * startDate before 0f  endDate =>正数
+     * startDate after 0f  endDate =>负数
+     * @see #bewteenTwoDays(LocalDate, LocalDate)
+     */
+    public static long bewteenTwoDays(LocalDateTime startDate,LocalDateTime endDate){
+        return ChronoUnit.DAYS.between(startDate, endDate);
+    }
+    /**
      * 获取时间差endDateTime-startDateTime
      * @param startDateTime
      * @param endDateTime
@@ -297,9 +316,33 @@ public class DateUtil {
      * @date : 2019/7/19 20:07
      */
     public static LocalDateTime stringToLocal(String str){
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat format = new SimpleDateFormat(PATTERN_24_h);
         ParsePosition pos = new ParsePosition(0);
         Date date1 = format.parse(str, pos);
         return date2LocalDateTime(date1);
+    }
+
+    /**
+     * @Description : 将时间段字符串拆分成2个LocalDateTime对象,默认第一个对象小于第二个对象
+     *
+     * @param str
+     * @return : java.time.LocalDateTime[]
+     * @author : 申劭明
+     * @date : 2019/9/26 20:19
+    */
+    public static LocalDateTime[] stringToLocals(String str) throws Exception {
+        Matcher matcher = PATTERN_REGEX_24H.matcher(str);
+        int i = 0;
+        LocalDateTime[] localDateTimes = new LocalDateTime[2];
+        while (matcher.find() && i<2){
+            String group = matcher.group();
+            localDateTimes[i++] = stringToLocal(group);
+        }
+        if (localDateTimes[1] == null){
+            throw new Exception("入参不符合规则,入参时间为" + str);
+        }else if(bewteenTwoDays(localDateTimes[0],localDateTimes[1]) <= 0){
+            throw new Exception("时间范围不符合条件,左时间需要小于右时间,而实际入参是" + str);
+        }
+        return localDateTimes;
     }
 }
