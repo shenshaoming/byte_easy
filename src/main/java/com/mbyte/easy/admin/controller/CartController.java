@@ -149,9 +149,12 @@ public class CartController extends BaseController  {
         return toAjax(cartService.removeById(id));
     }
     /**
-    * 批量删除
-    * @param ids
-    * @return
+     * @deprecated 功能说明
+     *
+     * @param ids
+     * @return com.mbyte.easy.common.web.AjaxResult
+     * @author 申劭明
+     * @date 2019/9/27 19:41
     */
     @PostMapping("deleteAll")
     @ResponseBody

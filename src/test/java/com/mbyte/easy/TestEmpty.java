@@ -10,11 +10,10 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 
 /**
- * @auther: wangzhen
- * @date: 19-4-11 20:28
- * @description: 测试空工具类
+ * @auther 申劭明
+ * @date 19-4-11 20:28
+ * @deprecated : 测试空工具类
  */
-
 public class TestEmpty extends TestCase {
 
     @Test

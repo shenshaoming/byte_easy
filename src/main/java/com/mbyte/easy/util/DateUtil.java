@@ -307,9 +307,8 @@ public class DateUtil {
     }
 
     /**
-     * 功能描述
      * 将str字符串的时间类型转成LocalDateTime类型
-
+     *
      * @param str
      * @return : java.time.LocalDateTime
      * @author : 申劭明
