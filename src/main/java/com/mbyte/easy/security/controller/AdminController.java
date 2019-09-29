@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 姜赛
+ * @author 姜赛
  */
 @Controller
 @RequestMapping("/")
@@ -59,7 +59,7 @@ public class AdminController {
 	@RequestMapping
 	public String welcome(Model model, HttpServletRequest req) {
 		// set集合保存的是引用不同地址的对象这里用于去掉重复的资源权限     !!!!!!LinkedHashSet去除重复同时保证排序
-		Set<SysResource> sysMenu = new LinkedHashSet<SysResource>();
+		Set<SysResource> sysMenu = new LinkedHashSet<>();
 		String loginUserName = Utility.getCurrentUsername();
 		// 加载左侧菜单列表
 	    List<SysResource> menuList = resourceService.selectByUsername(loginUserName);

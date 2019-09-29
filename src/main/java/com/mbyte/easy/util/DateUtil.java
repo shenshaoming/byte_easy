@@ -297,7 +297,6 @@ public class DateUtil {
                     timeDistance += 365;
                 }
             }
-            
             return timeDistance + (day2-day1) ;
         }
         else    //不同年
@@ -333,7 +332,8 @@ public class DateUtil {
         Matcher matcher = PATTERN_REGEX_24H.matcher(str);
         int i = 0;
         LocalDateTime[] localDateTimes = new LocalDateTime[2];
-        while (matcher.find() && i<2){
+        //通过i<2避免str中有过多满足的数据
+        while (matcher.find() && i < 2){
             String group = matcher.group();
             localDateTimes[i++] = stringToLocal(group);
         }

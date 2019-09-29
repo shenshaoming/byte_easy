@@ -29,7 +29,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/role")
 public class RoleController extends BaseController {
-	private static final Logger logger = LoggerFactory.getLogger(RoleController.class);
 
     private String prefix = "security/";
 
@@ -57,13 +56,13 @@ public class RoleController extends BaseController {
 			@RequestParam(value = "name", required = false, defaultValue = "") String name) {
 		SysRole role = new SysRole(); 
 
-		Page<SysRole> page = new Page<SysRole>(pageNo, pageSize);
+		Page<SysRole> page = new Page<>(pageNo, pageSize);
 		if (StringUtils.isNoneBlank(name)) {
 			role.setName(name);
 			model.addAttribute("name", name);
 		}
 		IPage<SysRole> pageInfo = roleService.listPage(role,page);
-		model.addAttribute("pageInfo", new PageInfo<SysRole>(pageInfo));
+		model.addAttribute("pageInfo", new PageInfo<>(pageInfo));
 		return this.prefix + "admin-role";
 	}
 
@@ -82,7 +81,7 @@ public class RoleController extends BaseController {
 
 
 	/**
-	 * @Author 王震
+	 * @Author 申劭明
 	 * @Description 更新角色和绑定角色权限
 	 * @Date 15:57 2019/4/14
 	 * @Param [model, role, roleResources]
@@ -97,7 +96,7 @@ public class RoleController extends BaseController {
 
 
 	/**
-	 * @Author 王震
+	 * @Author 申劭明
 	 * @Description 编辑角色权限
 	 * @Date 15:59 2019/4/14
 	 * @Param [model, role, id]
@@ -118,7 +117,7 @@ public class RoleController extends BaseController {
 	}
 
 	/**
-	 * @Author 王震
+	 * @Author 申劭明
 	 * @Description 更新角色信息
 	 * @Date 16:13 2019/4/14
 	 * @Param [model, role, roleResources]
@@ -133,7 +132,7 @@ public class RoleController extends BaseController {
 	}
 
 	/**
-	 * @Author 王震
+	 * @Author 申劭明
 	 * @Description 删除角色
 	 * @Date 16:18 2019/4/14
 	 * @Param [ids]
