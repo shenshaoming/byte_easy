@@ -103,6 +103,28 @@ public class ${table.controllerName} extends ${superControllerClass}  {
     @PostMapping("add")
     @ResponseBody
     public AjaxResult add(${entity} ${entity?uncap_first}){
+<#list table.fields as field >
+    <#if (field.propertyName == "createTime" || field.propertyName == "updateTime") >
+        <#if field.type == "datetime">
+            <#if field.propertyName == "createTime">
+            LocalDateTime createTime = LocalDateTime.now();
+            ${entity?uncap_first}.setCreateTime(createTime);
+            <#elseif field.propertyName == "updateTime">
+            LocalDateTime updateTime = LocalDateTime.now();
+            ${entity?uncap_first}.setUpdateTime(updateTime);
+            </#if>
+        </#if>
+        <#if field.type == "date">
+            <#if field.propertyName == "create_time">
+            LocalDate createTime = LocalDate.now();
+            ${entity?uncap_first}.setCreateTime(createTime);
+            <#else>
+            LocalDate updateTime = LocalDate.now();
+            ${entity?uncap_first}.setUpdateTime(updateTime);
+            </#if>
+        </#if>
+    </#if>
+</#list>
         return toAjax(${entity?uncap_first}Service.save(${entity?uncap_first}));
     }
     /**
@@ -122,6 +144,18 @@ public class ${table.controllerName} extends ${superControllerClass}  {
     @PostMapping("edit")
     @ResponseBody
     public AjaxResult edit(${entity} ${entity?uncap_first}){
+<#list table.fields as field >
+    <#if field.propertyName == "updateTime" >
+        <#if field.type == "datetime">
+            LocalDateTime updateTime = LocalDateTime.now();
+            ${entity?uncap_first}.setUpdateTime(updateTime);
+        </#if>
+        <#if field.type == "date">
+            LocalDate updateTime = LocalDate.now();
+            ${entity?uncap_first}.setUpdateTime(updateTime);
+        </#if>
+    </#if>
+</#list>
         return toAjax(${entity?uncap_first}Service.updateById(${entity?uncap_first}));
     }
     /**
