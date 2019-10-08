@@ -4,9 +4,11 @@ import com.mbyte.easy.generator.entity.SysGenerator;
 import com.mbyte.easy.generator.mapper.SysGeneratorMapper;
 import com.mbyte.easy.generator.service.ISysGeneratorService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import jdk.nashorn.internal.ir.annotations.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -20,11 +22,8 @@ import java.util.List;
 @Service
 public class SysGeneratorServiceImpl extends ServiceImpl<SysGeneratorMapper, SysGenerator> implements ISysGeneratorService {
 
-    @Autowired
-    private SysGeneratorMapper generatorMapper;
-
     @Override
     public List<String> getTables() {
-        return generatorMapper.getTables();
+        return this.baseMapper.getTables();
     }
 }

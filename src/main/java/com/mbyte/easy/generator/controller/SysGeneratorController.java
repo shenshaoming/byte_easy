@@ -36,7 +36,7 @@ public class SysGeneratorController extends BaseController  {
     private String prefix = "generator/sysGenerator/";
 
     @Autowired
-    private ISysGeneratorService sysGeneratorService;
+    private ISysGeneratorService sys;
 
     /**
      * @Description : 将数据库列表添加到model中
@@ -45,7 +45,7 @@ public class SysGeneratorController extends BaseController  {
      * @date : 2019/9/26 18:22
      */
     public void resourceList(Model model) {
-        model.addAttribute("databases",sysGeneratorService.getTables());
+        model.addAttribute("databases",sys.getTables());
     }
 
     /**
@@ -68,7 +68,7 @@ public class SysGeneratorController extends BaseController  {
             queryWrapper = queryWrapper.like("tableName",sysGenerator.getTableName());
         }
         resourceList(model);
-        IPage<SysGenerator> pageInfo = sysGeneratorService.page(page, queryWrapper);
+        IPage<SysGenerator> pageInfo = sys.page(page, queryWrapper);
         model.addAttribute("searchInfo", sysGenerator);
         model.addAttribute("pageInfo", new PageInfo(pageInfo));
         return prefix+"list";
@@ -98,7 +98,7 @@ public class SysGeneratorController extends BaseController  {
         LocalDateTime now = LocalDateTime.now();
         sysGenerator.setUpdateTime(now);
         sysGenerator.setCreateTime(now);
-        return toAjax(sysGeneratorService.save(sysGenerator));
+        return toAjax(sys.save(sysGenerator));
     }
 
     /**
@@ -113,7 +113,7 @@ public class SysGeneratorController extends BaseController  {
     public AjaxResult createCode(@RequestBody List<Long> ids){
         for(long id : ids){
             //通过ID在生成表中查询得到用户填入的与生成相关的信息
-            SysGenerator generator = sysGeneratorService.getById(id);
+            SysGenerator generator = sys.getById(id);
             try {
                 CodeGenerator.createCode(generator.getModuleName(),
                         generator.getTableName(), generator.getIgnoreFlag() +"",generator.getIgnorePrefix(),generator.getCreateRest() + "");
@@ -134,7 +134,7 @@ public class SysGeneratorController extends BaseController  {
     @GetMapping("editBefore/{id}")
     public String editBefore(Model model,@PathVariable("id")Long id){
         resourceList(model);
-        model.addAttribute("sysGenerator",sysGeneratorService.getById(id));
+        model.addAttribute("sysGenerator",sys.getById(id));
         return prefix+"edit";
     }
     /**
@@ -150,7 +150,7 @@ public class SysGeneratorController extends BaseController  {
             sysGenerator.setIgnorePrefix("");
         }
         sysGenerator.setUpdateTime(LocalDateTime.now());
-        return toAjax(sysGeneratorService.updateById(sysGenerator));
+        return toAjax(sys.updateById(sysGenerator));
     }
     /**
      * 删除
@@ -160,7 +160,7 @@ public class SysGeneratorController extends BaseController  {
     @GetMapping("delete/{id}")
     @ResponseBody
     public AjaxResult delete(@PathVariable("id") Long id){
-        return toAjax(sysGeneratorService.removeById(id));
+        return toAjax(sys.removeById(id));
     }
     /**
      * 批量删除
@@ -170,7 +170,7 @@ public class SysGeneratorController extends BaseController  {
     @PostMapping("deleteAll")
     @ResponseBody
     public AjaxResult deleteAll(@RequestBody List<Long> ids){
-        return toAjax(sysGeneratorService.removeByIds(ids));
+        return toAjax(sys.removeByIds(ids));
     }
 
 }
