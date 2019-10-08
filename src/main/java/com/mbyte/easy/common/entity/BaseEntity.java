@@ -10,6 +10,9 @@ import lombok.Data;
  */
 @Data
 public class BaseEntity {
+    /**
+     * 主键id,数据库中必须有id字段,且id字段为主键自增的bigint类型
+     */
     @TableId(type = IdType.AUTO,value = "id")
     private long id;
 }
