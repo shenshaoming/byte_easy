@@ -7,15 +7,34 @@ import java.util.List;
 
 /**
  * 定义分页信息类
+ * @author 申劭明
  */
 @Data
 public class PageInfo<T> {
-    private long pageSize; //条数
-    private long pageNum; //当前页
-    private long total; //总页数
-    private long nextPage; //下一页
-    private long prePage; //上一页
-    private long pages;//尾页
+    /**
+     * 每页显示的条数
+     */
+    private long pageSize;
+    /**
+     * 当前页
+     */
+    private long pageNum;
+    /**
+     * 总页数
+     */
+    private long total;
+    /**
+     * 下一页
+     */
+    private long nextPage;
+    /**
+     * 上一页
+     */
+    private long prePage;
+    /**
+     * 尾页
+     */
+    private long pages;
     private boolean isFirstPage;
     private boolean isLastPage;
     private boolean hasPreviousPage;
