@@ -19,6 +19,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -45,6 +46,7 @@ public class SysGeneratorController extends BaseController  {
      * @date : 2019/9/26 18:22
      */
     public void resourceList(Model model) {
+
         model.addAttribute("databases",sys.getTables());
     }
 
@@ -84,10 +86,13 @@ public class SysGeneratorController extends BaseController  {
         return prefix+"add";
     }
     /**
-     * 添加
+     * @Description 功能说明
+     *
      * @param sysGenerator
-     * @return
-     */
+     * @return com.mbyte.easy.common.web.AjaxResult
+     * @author 申劭明
+     * @date 2019/10/14 1:21
+    */
     @PostMapping("add")
     @ResponseBody
     public AjaxResult add(SysGenerator sysGenerator){
