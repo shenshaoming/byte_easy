@@ -12,9 +12,9 @@ import java.util.Random;
  * 
  * @Title: Utility
  * @Description:公用工具类
- * @Author:杨凯旋
- * @Since:2017年7月20日
- * @Version:1.1.0
+ * @Author:申劭明
+ * @Date:2019年3月20日
+ * @Version:1.1.2
  */
 public class Utility {
 
