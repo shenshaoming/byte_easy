@@ -2,8 +2,6 @@ package com.mbyte.easy.security.controller;
 
 import com.mbyte.easy.security.entity.SysResource;
 import com.mbyte.easy.security.entity.SysUser;
-import com.mbyte.easy.security.mapper.SysResourceMapper;
-import com.mbyte.easy.security.mapper.SysUserMapper;
 import com.mbyte.easy.security.service.IResourceService;
 import com.mbyte.easy.security.service.IUserService;
 import com.mbyte.easy.util.Utility;
@@ -28,7 +26,6 @@ import java.util.Set;
 @RequestMapping("/")
 public class AdminController {
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
-
     private String prefix = "security/";
 
     @Autowired
